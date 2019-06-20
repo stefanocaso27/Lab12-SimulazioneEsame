@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import it.polito.tdp.model.Distretto;
 import it.polito.tdp.model.Event;
 
 
@@ -55,4 +56,58 @@ public class EventsDao {
 		}
 	}
 
+	public List<Integer> getAnni() {
+		String sql = "SELECT YEAR(reported_date) AS anno " + 
+				"FROM EVENTS " + 
+				"GROUP BY anno ";
+		
+		try {
+			Connection conn = DBConnect.getConnection() ;
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			List<Integer> list = new ArrayList<>() ;	
+			ResultSet res = st.executeQuery() ;
+			
+			while(res.next()) {
+					Integer i = res.getInt("anno");
+					
+					list.add(i);
+			}
+			conn.close();
+			return list ;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null ;
+		}
+	}
+	
+	public List<Distretto> getDistretti(int anno) {
+		String sql = "SELECT district_id AS distretti, AVG(geo_lat) AS lat, AVG(geo_lon) AS lon " + 
+				"FROM EVENTS " + 
+				"WHERE YEAR(reported_date) = ? " + 
+				"GROUP BY distretti ";
+		
+		try {
+			Connection conn = DBConnect.getConnection() ;
+			PreparedStatement st = conn.prepareStatement(sql) ;
+			st.setInt(1, anno);
+			List<Distretto> list = new ArrayList<>() ;	
+			ResultSet res = st.executeQuery() ;
+			
+			while(res.next()) {
+				
+				Distretto d = new Distretto(res.getInt("distretti"), res.getDouble("lat"), res.getDouble("lon"));
+					
+				list.add(d);
+			}
+			conn.close();
+			return list ;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null ;
+		}
+	}
+	
+	
 }
