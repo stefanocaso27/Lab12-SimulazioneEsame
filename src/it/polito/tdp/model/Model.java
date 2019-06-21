@@ -20,12 +20,16 @@ public class Model {
 	private SimpleWeightedGraph<Distretto, DefaultWeightedEdge> grafo;
 	private List<Distretto> listDistretti;
 	private List<Coppia> listCoppie;
+	private List<Integer> giorni;
+	private List<Integer> mesi;
 	
 	public Model() {
 		this.listAnni = new LinkedList<>();
 		this.dao = new EventsDao();
 		this.listDistretti = new LinkedList<>();
 		this.listCoppie = new LinkedList<>();
+		this.giorni = new LinkedList<>();
+		this.mesi = new LinkedList<>();
 	}
 	
 	public List<Integer> getListaAnni() {
@@ -87,6 +91,20 @@ public class Model {
 		
 		s = listCoppie.toString();
 		return s;
+	}
+	
+	public List<Integer> listaGiorni() {
+		for(int i=0; i<31; i++) {
+			this.giorni.add(i+1);
+		}
+		return giorni;
+	}
+	
+	public List<Integer> listaMesi() {
+		for(int i=0; i<12; i++) {
+			this.mesi.add(i+1);
+		}
+		return mesi;
 	}
 	
 }

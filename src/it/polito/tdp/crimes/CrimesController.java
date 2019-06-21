@@ -48,7 +48,14 @@ public class CrimesController {
 
     @FXML
     void doCreaReteCittadina(ActionEvent event) {
-    	int anno = boxAnno.getValue();
+    	
+    	Integer anno = boxAnno.getValue();
+    	
+    	if(anno == null) {
+    		txtResult.appendText("Inserire anno!");
+    		return;
+    	}
+    	
     	 model.creaGrafo(anno);
     	 
     	 String s = model.calcolaClassifica();
@@ -57,7 +64,34 @@ public class CrimesController {
 
     @FXML
     void doSimula(ActionEvent event) {
+    	Integer anno = boxAnno.getValue();
+    	if(anno == null) {
+    		txtResult.appendText("Inserire anno!");
+    		return;
+    	}
 
+    	Integer giorno = boxGiorno.getValue();
+    	if(giorno == null) {
+    		txtResult.appendText("Inserire giorno!");
+    		return;
+    	}
+    	
+    	Integer mese = boxMese.getValue();
+    	if(mese == null) {
+    		txtResult.appendText("Inserire mese!");
+    		return;
+    	}
+    	
+    	try {
+    		Integer n = Integer.parseInt(txtN.getText());
+    	} catch(NumberFormatException e) {
+    		txtResult.clear();
+    		txtResult.appendText("Devi inserire un numero N di agenti");
+    		return;
+    	}
+    	
+    	
+    	
     }
 
     @FXML // This method is called by the FXMLLoader when initialization is complete
@@ -76,5 +110,7 @@ public class CrimesController {
     	this.model = model;
     	
     	boxAnno.getItems().addAll(model.getListaAnni());
+    	boxGiorno.getItems().addAll(model.listaGiorni());
+    	boxMese.getItems().addAll(model.listaMesi());
     }
 }
